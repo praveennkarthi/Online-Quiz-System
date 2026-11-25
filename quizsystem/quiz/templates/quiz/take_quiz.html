@@ -1,0 +1,32 @@
+{% extends "quiz/base.html" %}
+{% block title %}{{ quiz.title }}{% endblock %}
+{% block content %}
+<h1>{{ quiz.title }}</h1>
+<div id="timer"></div>
+<form method="post" id="quiz-form">
+  {% csrf_token %}
+  {% for q in questions %}
+    <div class="card">
+      <strong>{{ forloop.counter }}. {{ q.text }}</strong>
+      {% for c in q.choices.all %}
+        <label class="opt"><input type="radio" name="question_{{ q.id }}" value="{{ c.id }}" style="width:auto;margin-right:8px">{{ c.text }}</label>
+      {% endfor %}
+    </div>
+  {% endfor %}
+  <button class="btn" type="submit">Submit Quiz</button>
+</form>
+<script>
+  let remaining = {{ quiz.time_limit_minutes }} * 60;
+  const timer = document.getElementById("timer");
+  const form = document.getElementById("quiz-form");
+  function tick() {
+    const m = String(Math.floor(remaining / 60)).padStart(2, "0");
+    const s = String(remaining % 60).padStart(2, "0");
+    timer.textContent = "Time left: " + m + ":" + s;
+    if (remaining <= 0) { form.submit(); return; }
+    remaining--;
+    setTimeout(tick, 1000);
+  }
+  tick();
+</script>
+{% endblock %}

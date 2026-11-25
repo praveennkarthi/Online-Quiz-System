@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Online Quiz{% endblock %}</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --text:#1f2430; --muted:#6b7280; --brand:#4f46e5; --ok:#16a34a; --bad:#dc2626; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#12141a; --card:#1c1f29; --text:#e8eaf0; --muted:#9aa1b2; --brand:#818cf8; }
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,sans-serif; background:var(--bg); color:var(--text); }
+    nav { background:var(--card); padding:14px 24px; display:flex; gap:18px; align-items:center; box-shadow:0 1px 4px rgba(0,0,0,.15); }
+    nav a, nav button { color:var(--text); text-decoration:none; background:none; border:0; font:inherit; cursor:pointer; }
+    nav .brand { font-weight:700; color:var(--brand); margin-right:auto; font-size:1.1rem; }
+    main { max-width:800px; margin:28px auto; padding:0 16px; }
+    .card { background:var(--card); border-radius:12px; padding:20px; margin-bottom:16px; box-shadow:0 1px 4px rgba(0,0,0,.12); }
+    .btn { display:inline-block; background:var(--brand); color:#fff !important; padding:9px 18px; border-radius:8px; border:0; cursor:pointer; text-decoration:none; font:inherit; }
+    .muted { color:var(--muted); }
+    .ok { color:var(--ok); } .bad { color:var(--bad); }
+    label.opt { display:block; padding:8px 10px; border:1px solid rgba(128,128,128,.35); border-radius:8px; margin:6px 0; cursor:pointer; }
+    input, select { padding:8px; border-radius:6px; border:1px solid rgba(128,128,128,.5); background:var(--card); color:var(--text); width:100%; margin:4px 0 10px; }
+    table { width:100%; border-collapse:collapse; } td, th { padding:8px; text-align:left; border-bottom:1px solid rgba(128,128,128,.25); }
+    #timer { position:sticky; top:0; text-align:right; font-weight:700; padding:6px 0; color:var(--brand); }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="{% url 'home' %}">QuizHub</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'my_results' %}">My Results</a>
+      <span class="muted">Hi, {{ user.username }}</span>
+      <form method="post" action="{% url 'logout' %}" style="margin:0">{% csrf_token %}<button type="submit">Logout</button></form>
+    {% else %}
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'signup' %}">Sign up</a>
+    {% endif %}
+  </nav>
+  <main>{% block content %}{% endblock %}</main>
+</body>
+</html>

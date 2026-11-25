@@ -1,0 +1,22 @@
+{% extends "quiz/base.html" %}
+{% block content %}
+<div class="card">
+  <h1 style="margin-top:0">{{ attempt.quiz.title }} - Result</h1>
+  <h2>Score: {{ attempt.score }} / {{ attempt.total }} ({{ attempt.percentage }}%)</h2>
+</div>
+{% for a in answers %}
+  <div class="card">
+    <strong>{{ forloop.counter }}. {{ a.question.text }}</strong>
+    <p>Your answer:
+      {% if a.selected %}<span class="{% if a.is_correct %}ok{% else %}bad{% endif %}">{{ a.selected.text }}</span>
+      {% else %}<span class="bad">Not answered</span>{% endif %}
+    </p>
+    {% if not a.is_correct %}
+      <p>Correct answer:
+        {% for c in a.question.choices.all %}{% if c.is_correct %}<span class="ok">{{ c.text }}</span>{% endif %}{% endfor %}
+      </p>
+    {% endif %}
+  </div>
+{% endfor %}
+<a class="btn" href="{% url 'home' %}">Back to quizzes</a>
+{% endblock %}

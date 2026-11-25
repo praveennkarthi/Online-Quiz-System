@@ -1,0 +1,15 @@
+{% extends "quiz/base.html" %}
+{% block content %}
+<h1>Available Quizzes</h1>
+{% for quiz in quizzes %}
+  <div class="card">
+    <h2 style="margin-top:0">{{ quiz.title }}</h2>
+    <p class="muted">{{ quiz.description }}</p>
+    <p class="muted">{{ quiz.questions.count }} questions · {{ quiz.time_limit_minutes }} min</p>
+    <a class="btn" href="{% url 'take_quiz' quiz.id %}">Start Quiz</a>
+    <a href="{% url 'leaderboard' quiz.id %}" style="margin-left:12px">Leaderboard</a>
+  </div>
+{% empty %}
+  <p class="muted">No quizzes yet. Add one from the <a href="/admin/">admin panel</a>.</p>
+{% endfor %}
+{% endblock %}

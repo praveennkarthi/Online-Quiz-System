@@ -1,0 +1,11 @@
+{% extends "quiz/base.html" %}
+{% block content %}
+<div class="card">
+  <h1 style="margin-top:0">Login</h1>
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn" type="submit">Login</button>
+  </form>
+  <p class="muted">New here? <a href="{% url 'signup' %}">Create an account</a></p>
+</div>
+{% endblock %}
